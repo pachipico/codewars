@@ -6,19 +6,33 @@
 // 999 --> 4 (because 9*9*9 = 729, 7*2*9 = 126, 1*2*6 = 12, and finally 1*2 = 2)
 // 4 --> 0 (because 4 is already a one-digit number)
 
+// 내 답안
 function persistence(num) {
   //code me
   let cnt = 0;
-
-  console.log(num);
-  if (num >= 10) {
-    let result = 1;
-    cnt++;
-    return persistence(num.split("").map((each) => (result *= each)));
-  } else {
-    return cnt;
+  function step(n) {
+    if (n >= 10) {
+      cnt++;
+      return step(
+        n
+          .toString()
+          .split("")
+          .reduce((acc, curr, idx) => {
+            return acc * curr;
+          })
+      );
+    } else return cnt;
   }
+  return step(num);
 }
-console.log("39", persistence(39));
-console.log("999", persistence(999));
-console.log("4", persistence(4));
+
+// 모범 답안
+function persistence(num, cnt = 0) {
+  let arrayNum = num.toString().split("");
+  return arrayNum.length === 1
+    ? cnt
+    : persistence(
+        arrayNum.reduce((x, y) => x * y),
+        ++cnt
+      );
+}
