@@ -36,3 +36,5 @@ function persistence(num, cnt = 0) {
         ++cnt
       );
 }
+
+// 비슷하게 풀었음.
