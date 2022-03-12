@@ -25,28 +25,14 @@ function mixedFraction(s) {
   //your code here
   let nums = s.split("/");
   nums = nums.map((each) => Number(each));
-  console.log(nums);
   if (nums[0] == 0) return "0";
-  if (nums[1] == 0) {
-    class ZeroDivisionError extends Error {
-      constructor(message) {
-        super(message);
-        this.name = "ZeroDivisionError";
-      }
-    }
-    return 0 / 0;
-  }
+  if (nums[1] == 0) throw ZeroDivisionError;
+
   const gcd = (a, b) => {
     if (b === 0) return a; // 나누어지면 a 리턴
     return gcd(b, a % b); // 나누어지지 않는다면 b와 a%b를 다시 나눈다
   };
 
-  console.log(
-    Math.trunc(nums[0] / nums[1]),
-    ` ${Math.abs(nums[0] % nums[1]) / gcd(Math.abs(nums[0] % nums[1]), nums[1])}/${
-      nums[1] / gcd(Math.abs(nums[0] % nums[1]), nums[1])
-    }`
-  );
   if (Math.trunc(nums[0] / nums[1]) == 0) {
     return `${Math.abs(nums[0] % nums[1]) / gcd(Math.abs(nums[0] % nums[1]), nums[1])}/${
       nums[1] / gcd(Math.abs(nums[0] % nums[1]), nums[1])
@@ -71,3 +57,5 @@ function mixedFraction(s) {
   (x = Math.abs(x / g)), (y = Math.abs(y / g));
   return add + (x < y ? "" : Math.floor(x / y) + " ") + (x % y) + "/" + y;
 }
+
+// 최대 공약수 로직 배웠음
