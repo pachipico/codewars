@@ -23,3 +23,19 @@
 // Negative numbers and duplicate numbers can and will appear.
 
 // NOTE: There will also be lists tested of lengths upwards of 10,000,000 elements. Be sure your code doesn't time out.
+function sumPairs(ints, s) {
+  // 수에서 ints중 하나를 뺀 값이 있는지를 알아오면 될듯..?
+  let result = [];
+  ints.forEach((n) => (ints.lastIndexOf(s - n) ? (result = [n, ints.lastIndexOf(s - n)]) : ""));
+  console.log(result);
+  return [0, 0] || undefined;
+}
+
+//
+var sum_pairs = function (ints, s) {
+  var seen = {};
+  for (var i = 0; i < ints.length; ++i) {
+    if (seen[s - ints[i]]) return [s - ints[i], ints[i]];
+    seen[ints[i]] = true;
+  }
+};
