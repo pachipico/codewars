@@ -43,3 +43,18 @@ function comp(array1, array2) {
 }
 
 // every 알고 있었는데 생각을 못했다..
+function comp(array1, array2) {
+  //your code here
+  if (array1 == null || array2 == null) return false;
+  array1 = array1.sort((a, b) => a - b);
+  array2 = array2.sort((a, b) => a - b);
+  return array1.every((v, i) => v == Math.sqrt(array2[i]));
+}
+// 이게 더 나은듯
+
+function comp(array1, array2) {
+  //your code here
+  if (array1 == null || array2 == null) return false;
+  return array1.sort((a, b) => a - b).every((v, i) => v == Math.sqrt(array2.sort((a, b) => a - b)[i]));
+}
+// 이것두
