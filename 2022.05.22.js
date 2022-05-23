@@ -20,7 +20,6 @@
 
 // What's new
 // So, let's resume what are the new issues in this harder version of the Kata:
-
 // The initial position might be any non-empty slot in the grid (given as input).
 // The characters grid (also given as input) might have any rectangular layout, not only 3 rows.
 // The grid might contain empty spaces, both on the borders or right in the middle.
@@ -34,46 +33,80 @@
 // The output is the same as before: the list of characters that have been hovered by the selection cursor after each move, successful or not.
 
 // Hopefully test cases will complete my explanation.
+// 내 답안. 굉장히 별로다
 function superStreetFighterSelection(fighters, position, moves) {
-  console.log(moves);
-  console.log(fighters[position[0]][position[1]]);
-  const [y, x] = position;
-  moves.forEach((v) => {
+  let [y, x] = position;
+  return moves.map((v) => {
     switch (v) {
       case "up":
-        if (y == 0 || fighters[y - 1][x] == "") {
-          // 맨 위였을때
-          y = 2;
-        } else {
+        if (fighters[y - 1] != undefined) {
+          if (fighters[y - 1][x] == "") break;
           y -= 1;
         }
         break;
       case "down":
-        if (y == 2) {
-          // 맨 밑이였을때
-          y = fighters[0][x] == "" ? 1 : 0;
-        } else {
+        if (fighters[y + 1] != undefined) {
+          if (fighters[y + 1][x] == "") break;
           y += 1;
         }
         break;
       case "left":
-        if (fighters[y][x - 1] == "" || fighters[y][x - 1] == undefined) {
-          // 맨 왼쪽이였을때
-          x = fighters[y][5] == "" ? 4 : 5;
-        } else {
-          x -= 1;
+        if (fighters[y][x - 1] == "") x -= 1;
+        if (fighters[y][x - 1] == undefined) {
+          x = fighters[y][fighters[y].length - 1] == "" ? fighters[y].length - 2 : fighters[y].length - 1;
+          break;
         }
+        x -= 1;
         break;
+
       case "right":
-        if (fighters[y][x + 1] == "" || Squadron[y][x + 1] == undefined) {
-          // 맨 오른쪽이였을때
-          x = fighters[y][x] == "" ? 1 : 0;
-        } else {
-          x += 1;
+        if (fighters[y][x + 1] == "") x += 1;
+        if (fighters[y][x + 1] == undefined) {
+          x = fighters[y][0] == "" ? 1 : 0;
+          break;
         }
+        x += 1;
         break;
     }
-    console.log(fighters[y][x]);
+    return fighters[y][x];
   });
-  return [];
+}
+
+// 모범 답안
+function superStreetFighterSelection(fighters, position, moves) {
+  var rows = fighters.length;
+  var cols = fighters[0].length;
+  var hovers = [];
+
+  moves.forEach((move) => {
+    switch (move) {
+      case "up":
+        position[0] = position[0] > 0 ? position[0] - 1 : 0;
+        if (fighters[position[0]][position[1]] == "") {
+          position[0] += 1;
+        }
+        break;
+
+      case "down":
+        position[0] = position[0] < rows - 1 ? position[0] + 1 : rows - 1;
+        if (fighters[position[0]][position[1]] == "") {
+          position[0] -= 1;
+        }
+        break;
+
+      case "left":
+        do {
+          position[1] = position[1] > 0 ? position[1] - 1 : cols - 1;
+        } while (fighters[position[0]][position[1]] == "");
+        break;
+
+      case "right":
+        do {
+          position[1] = position[1] < cols - 1 ? position[1] + 1 : 0;
+        } while (fighters[position[0]][position[1]] == "");
+        break;
+    }
+    hovers.push(fighters[position[0]][position[1]]);
+  });
+  return hovers;
 }
