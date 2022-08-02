@@ -21,3 +21,4 @@ public class Kata
   }
 }
 
+// noneMatch, allMatch 알고있었는데 까비
