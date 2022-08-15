@@ -1,0 +1,34 @@
+
+// You are given an odd-length array of integers, in which all of them are the same, except for one single number.
+
+// Complete the method which accepts such an array, and returns that single different number.
+
+// The input array will always be valid! (odd-length >= 3)
+
+// Examples
+// [1, 1, 2] ==> 2
+// [17, 17, 3, 17, 17, 17, 17] ==> 3
+
+// 내 답안
+import java.util.Map;
+import java.util.HashMap;
+
+class Solution {
+  static int stray(int[] numbers) {
+        Map<String,Integer > map = new HashMap<>();
+        for (int i : numbers) {
+            if(!map.containsKey(String.valueOf(i))) map.put(String.valueOf(i), 1);
+            else map.compute(String.valueOf(i), (key, val) -> val + 1);
+        }
+        return Integer.parseInt(map.entrySet().stream().filter(v -> v.getValue()%2 == 1).findFirst().get().getKey());
+  }
+}
+
+// 모범답안
+class Solution {
+  static int stray(int[] numbers) {
+    if (numbers[0] != numbers[1] && numbers[0] != numbers[2]) return numbers[0];
+    for (int i : numbers) if (i != numbers[0]) return i;
+    return 0;
+  }
+}
