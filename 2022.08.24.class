@@ -1,0 +1,30 @@
+// Introduction and Warm-up (Highly recommended)
+// Playing With Lists/Arrays Series
+// Task
+// Given an array/list [] of integers , Find the Nth smallest element in this array of integers
+
+// Notes
+// Array/list size is at least 3 .
+
+// Array/list's numbers could be a mixture of positives , negatives and zeros .
+
+// Repetition in array/list's numbers could occur , so don't Remove Duplications .
+
+// 내 답안
+import java.util.Arrays;
+
+public class Kata {
+    public static int nthSmallest(final int[] arr, final int n) {
+      Arrays.sort(arr);
+        return arr[n-1]; // Do your magic!
+    }
+}
+
+// 모범답안
+import java.util.Arrays;
+public class Kata {
+    public static int nthSmallest(final int[] arr, final int n) {
+        Arrays.sort(arr);
+    return arr[n - 1];
+    }
+}
