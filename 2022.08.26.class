@@ -1,0 +1,16 @@
+// Find the total sum of internal angles (in degrees) in an n-sided simple polygon. N will be greater than 2.
+
+
+// 내 답안
+public class AngleSum {
+  public static int sumOfAngles(int n) {
+    return 180 * (n-2);
+  }
+}
+
+// 모범답안
+public class AngleSum {
+  public static int sumOfAngles(int n) {
+    return 180 * (n-2);
+  }
+}
