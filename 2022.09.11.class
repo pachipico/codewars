@@ -1,0 +1,28 @@
+// Return the number (count) of vowels in the given string.
+
+// We will consider a, e, i, o, u as vowels for this Kata (but not y).
+
+// The input string will only consist of lower case letters and/or spaces.
+
+// 내 답안
+import java.util.*;
+
+
+public class Vowels {
+
+  public static int getCount(String str) {
+        List<String> vowels = Arrays.asList("a", "e", "i", "o", "u");
+        return (int) Arrays.stream(str.split("")).filter(v -> vowels.contains(v)).count();
+  }
+
+}
+
+// 모범답안
+
+public class Vowels {
+
+    public static int getCount(String str) {
+        return str.replaceAll("(?i)[^aeiou]", "").length();
+    }
+
+}

@@ -1,0 +1,36 @@
+// In this Kata, you will be given a string that may have mixed uppercase and lowercase letters and your task is to convert that string to either lowercase only or uppercase only based on:
+
+// make as few changes as possible.
+// if the string contains equal number of uppercase and lowercase letters, convert the string to lowercase.
+// For example:
+
+// solve("coDe") = "code". Lowercase characters > uppercase. Change only the "D" to lowercase.
+// solve("CODe") = "CODE". Uppercase characters > lowecase. Change only the "e" to uppercase.
+// solve("coDE") = "code". Upper == lowercase. Change all to lowercase.
+// More examples in test cases. Good luck!
+
+// 내 답안
+import java.util.Map;
+import java.util.HashMap;
+
+
+public class Solution {
+    public static String solve(final String str) {
+        Map<String, Integer> map = new HashMap<>(Map.of("low", 0, "up", 0));
+        for (char c : str.toCharArray()) {
+            if( c == Character.toLowerCase(c)) map.compute("low", (k,v) -> v+1);
+            else map.compute("up", (k,v) -> v+1);
+        }
+      
+        return map.get("low") >= map.get("up") ? str.toLowerCase() : str.toUpperCase();
+    }
+}
+
+// 모범답안
+public class Solution {
+    public static String solve(final String str) {
+        return str.chars().filter(Character::isLowerCase).count() >= str.chars().filter(Character::isUpperCase).count()
+        ? str.toLowerCase()
+        : str.toUpperCase();
+    }
+}
