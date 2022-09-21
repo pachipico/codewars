@@ -1,0 +1,61 @@
+// Longest Palindrome
+// Find the length of the longest substring in the given string s that is the same in reverse.
+
+// As an example, if the input was “I like racecars that go fast”, the substring (racecar) length would be 7.
+
+// If the length of the input string is 0, the return value must be 0.
+
+// Example:
+// "a" -> 1 
+// "aab" -> 2  
+// "abcde" -> 1
+// "zzbaabcd" -> 4
+// "" -> 0
+
+// import java.util.*;
+
+// 못풀었다.. 중복문제를 못풀었음..
+import java.util.stream.Collectors;
+
+public class Palindromes {
+    public static int longestPalindrome(final String s) {
+        int longest = 0;
+        String[] split = s.split("");
+        for (int i = 0; i < s.length(); i++) {
+            int first = s.indexOf(split[i], i);
+            int next = s.indexOf(split[i], i + 1 ) > 0 ? s.indexOf(split[i], i + 1 ) : s.length()-1;
+            int blank = 0;
+            String string = s.substring(first, next + 1);
+            if(string.length()%2 == 0){
+                String pre1 = string.substring(0, (int) Math.ceil(string.length() / 2));
+                String suf1 = string.substring((int) Math.ceil(string.length() / 2));
+                if(pre1.equals(new StringBuilder(suf1).reverse().toString())) longest = longest = longest <= next+1-first ? next+1-first+ blank: longest;
+            }else {
+                String pre2 = string.substring(0, (int) Math.ceil(string.length() / 2));
+                String suf2 = string.substring((int) Math.ceil(string.length() / 2) + 1);
+                if(pre2.equals(new StringBuilder(suf2).reverse().toString())) longest = longest = longest <= next+1-first ? next+1-first+blank: longest;
+            }
+        }
+        return longest; //your code here
+    }
+}
+
+// 모범 답안
+public class Palindromes {
+    public static int longestPalindrome(final String s) {
+        int result = 0;        
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = s.length(); j > i; j--) {
+                StringBuilder sb = new StringBuilder(s.subSequence(i, j));
+                if (sb.length() <= result) break;
+                if (sb.toString().equals(sb.reverse().toString())) {
+                    result = sb.length();
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+}
+
+// 뒤에서부터 줄여나가면서 확인하는 방법을 생각 못했다.
