@@ -1,0 +1,24 @@
+// Given a string made up of letters a, b, and/or c, switch the position of letters a and b (change a to b and vice versa). Leave any incidence of c untouched.
+
+// Example:
+
+// 'acb' --> 'bca'
+// 'aabacbaa' --> 'bbabcabb'
+// 내 답안
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+public class Switch {
+  public static String switcheroo(String x) {
+    return Arrays.stream(x.split("")).map(v -> v.equals("c") ? "c" : v.equals("a") ? "b" : "a" ).collect(Collectors.joining());
+  }
+}
+
+// 모범답안
+class Switch {
+  
+  public static String switcheroo(String x) {
+    return x.replace('a','_').replace('b','a').replace('_','b');
+  }
+  
+}
