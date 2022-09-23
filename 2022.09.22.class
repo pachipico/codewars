@@ -20,7 +20,7 @@ public class GiftSorter{
     //Put code here!
     return Arrays.stream(code.split("")).sorted().collect(Collectors.joining());
   }
-  
+   
 }
 
 // 모범답안
