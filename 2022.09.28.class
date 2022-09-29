@@ -1,0 +1,117 @@
+// Introduction
+// Snakes and Ladders is an ancient Indian board game regarded today as a worldwide classic. It is played between two or more players on a gameboard having numbered, gridded squares. A number of "ladders" and "snakes" are pictured on the board, each connecting two specific board squares. (Source Wikipedia)
+
+// Task
+// Your task is to make a simple class called SnakesLadders. The test cases will call the method play(die1, die2) independantly of the state of the game or the player turn. The variables die1 and die2 are the die thrown in a turn and are both integers between 1 and 6. The player will move the sum of die1 and die2.
+// The Board
+
+// Rules
+// 1.  There are two players and both start off the board on square 0.
+
+// 2.  Player 1 starts and alternates with player 2.
+
+// 3.  You follow the numbers up the board in order 1=>100
+
+// 4.  If the value of both die are the same then that player will have another go.
+
+// 5.  Climb up ladders. The ladders on the game board allow you to move upwards and get ahead faster. If you land exactly on a square that shows an image of the bottom of a ladder, then you may move the player all the way up to the square at the top of the ladder. (even if you roll a double).
+
+// 6.  Slide down snakes. Snakes move you back on the board because you have to slide down them. If you land exactly at the top of a snake, slide move the player all the way to the square at the bottom of the snake or chute. (even if you roll a double).
+
+// 7.  Land exactly on the last square to win. The first person to reach the highest square on the board wins. But there's a twist! If you roll too high, your player "bounces" off the last square and moves back. You can only win by rolling the exact number needed to land on the last square. For example, if you are on square 98 and roll a five, move your game piece to 100 (two moves), then "bounce" back to 99, 98, 97 (three, four then five moves.)
+
+// 8.  If the Player rolled a double and lands on the finish square “100” without any remaining moves then the Player wins the game and does not have to roll again.
+// Returns
+// Return Player n Wins!. Where n is winning player that has landed on square 100 without any remainding moves left.
+
+// Return Game over! if a player has won and another player tries to play.
+
+// Otherwise return Player n is on square x. Where n is the current player and x is the sqaure they are currently on.
+
+// 내 답안
+import java.util.List;
+import java.util.Arrays;
+
+public class SnakesLadders {
+    public SnakesLadders() {}
+    private final List<Integer> up = Arrays.asList(2, 7, 8, 15, 21, 28, 36, 51, 71, 78, 87);
+    private final List<Integer> upTo = Arrays.asList(38, 14, 31, 26, 42, 84, 44, 67, 91, 98, 94);
+    private final List<Integer> down = Arrays.asList(16, 46, 49, 62, 64, 74, 89, 92, 95, 99);
+    private final List<Integer> downTo = Arrays.asList(6, 25, 11, 19, 60, 53, 68, 88, 75, 80);
+    public int turn = 1;
+    private int p1 = 0;
+    private int p2 = 0;
+    public String play(int die1, int die2) {
+        if (p1 == 100 || p2 == 100) return "Game over!";
+        String res;
+        if (turn == 1) {
+            // player 1 moves
+            p1 += (die1 + die2);
+
+            // player bounces
+            if (p1 > 100) p1 = 200 - p1;
+
+            // player goes up or down
+            if (up.contains(p1)) p1 = upTo.get(up.indexOf(p1));
+            if (down.contains(p1)) p1 = downTo.get(down.indexOf(p1));
+            
+            res = String.format("Player %d is on square %d", turn, turn == 1 ? p1 : p2);
+            // when same dice play again
+            turn = (die1 - die2 == 0) ? 1 : 2;
+
+        } else {
+            // player 2 moves
+            p2 += (die1 + die2);
+
+            // player bounces
+            if (p2 > 100) p2 = 200 - p2;
+
+            // player goes up or down
+            if (up.contains(p2)) p2 = upTo.get(up.indexOf(p2));
+            if (down.contains(p2)) p2 = downTo.get(down.indexOf(p2));
+            
+            res = String.format("Player %d is on square %d", turn, turn == 1 ? p1 : p2);
+            // when same dice play again
+            turn = (die1 - die2 == 0) ? 2 : 1;
+        }
+        return p1 == 100 ? "Player 1 Wins!" : p2 == 100 ? "Player 2 Wins!" : res;
+    }
+}
+
+// 모범답안
+import java.util.HashMap;
+
+public class SnakesLadders {
+    private int[] positionOfPlayer = new int[] {0, 0};
+    private int currentPlayer = 0; //0 for first player and 1 for second
+    private boolean isGameWon = false;
+    
+    private static HashMap<Integer, Integer> teleportMap = new HashMap<>();    
+    static {
+      teleportMap.put(2, 38);  teleportMap.put(36, 44); teleportMap.put(74, 53);
+      teleportMap.put(7, 14);  teleportMap.put(46, 25); teleportMap.put(78, 98);
+      teleportMap.put(8, 31);  teleportMap.put(49, 11); teleportMap.put(87, 94);
+      teleportMap.put(15, 26); teleportMap.put(51, 67); teleportMap.put(89, 68);
+      teleportMap.put(16, 6);  teleportMap.put(62, 19); teleportMap.put(92, 88);
+      teleportMap.put(21, 42); teleportMap.put(64, 60); teleportMap.put(95, 75);
+      teleportMap.put(28, 84); teleportMap.put(71, 91); teleportMap.put(99, 80);
+    }
+    
+    public String play(int die1, int die2) {
+      if (isGameWon) return "Game over!";
+      movePlayer(currentPlayer, die1+die2);
+      String result = isGameWon ? "Player "+(currentPlayer+1)+" Wins!"
+                      : "Player "+(currentPlayer+1)+" is on square "+positionOfPlayer[currentPlayer];
+      if (die1 != die2) currentPlayer = currentPlayer==1 ? 0 : 1;
+      return result;
+    }
+    
+    private void movePlayer(int index, int dice) {
+      int newPosition = positionOfPlayer[index]+dice;
+      if (newPosition > 100) newPosition = 200 - newPosition;
+      positionOfPlayer[index] = teleportMap.getOrDefault(newPosition, newPosition);
+      if (positionOfPlayer[index] == 100) isGameWon = true;
+    }
+}
+
+// static으로 초기 설정하는것, getOrDefault 처음 봄.
