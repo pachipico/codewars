@@ -37,3 +37,4 @@ public class MorseCodeDecoder {
                 .collect(joining(" "));
     }
 }
+
