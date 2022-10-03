@@ -1,0 +1,30 @@
+// Complete the solution so that it splits the string into pairs of two characters. If the string contains an odd number of characters then it should replace the missing second character of the final pair with an underscore ('_').
+
+// Examples:
+
+// * 'abc' =>  ['ab', 'c_']
+// * 'abcdef' => ['ab', 'cd', 'ef']
+
+// 내 답안
+import java.util.stream.IntStream;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class StringSplit {
+    public static String[] solution(String s) {
+        //Write your code here
+        if(s.length() % 2 == 1) s+="_";
+        String[] arr = s.split("");
+        return IntStream.range(0, s.length()).filter(i1 -> i1 % 2 == 1).mapToObj(v1 -> arr[v1 - 1] + arr[v1]).collect(Collectors.toList()).toArray(new String[IntStream.range(0, s.length()).filter(i -> i % 2 == 1).mapToObj(v -> arr[v - 1] + arr[v]).collect(Collectors.toList()).size()]);
+    }
+}
+
+// 모범답안
+public class StringSplit {
+    public static String[] solution(String s) {
+        s = (s.length() % 2 == 0)?s:s+"_";
+        return s.split("(?<=\\G.{2})");
+    }
+}
+
+
