@@ -1,0 +1,41 @@
+// DESCRIPTION:
+// In mathematics, Pascal's triangle is a triangular array of the binomial coefficients expressed with formula
+
+// (nk)=n!k!(n−k)!\lparen {n \atop k} \rparen = \frac {n!} {k!(n-k)!}( 
+// k
+// n
+// ​
+//  )= 
+// k!(n−k)!
+// n!
+// ​
+ 
+// where n denotes a row of the triangle, and k is a position of a term in the row.
+
+// Pascal's Triangle
+
+// You can read Wikipedia article on Pascal's Triangle for more information.
+
+// Task
+// Write a function that, given a depth n, returns n top rows of Pascal's Triangle flattened into a one-dimensional list/array.
+
+// Example:
+// n = 1: [1]
+// n = 2: [1,  1, 1]
+// n = 4: [1,  1, 1,  1, 2, 1,  1, 3, 3, 1]
+
+// 접근 법을 모르겠다
+import java.util.*;
+public class PascalsTriangle {
+    public static long[] generate(int n) {
+        final List<Long> res = new ArrayList<Long>();
+        for (int i=0; i<n; i++) {
+            long num = 1;
+            for (int j=0; j<=i; j++) {
+                res.add(num);
+                num = (num*(i-j)) / (j+1);
+            }
+        }
+        return res.stream().mapToLong(i -> i).toArray();
+    }
+}

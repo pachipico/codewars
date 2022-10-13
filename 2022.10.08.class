@@ -1,0 +1,30 @@
+// Assume "#" is like a backspace in string. This means that string "a#bc#d" actually is "bd"
+
+// Your task is to process a string with "#" symbols.
+
+// Examples
+// "abc#d##c"      ==>  "ac"
+// "abc##d######"  ==>  ""
+// "#######"       ==>  ""
+// ""              ==>  ""
+
+// 내 답안
+public class BackspacesInString {
+  public String cleanString(String s) {
+    // your code here
+		  while(s.contains("#")) {
+			  if(s.replaceAll("#", "").length() == 0) return "";
+        if(s.charAt(0) == '#') s = s.replaceFirst("#", "");
+			  s = s.replaceAll("[a-zA-Z0-9*-|=|+|/|(|)|{|}]#", "");
+		  }
+		  return s;
+  }
+}
+
+// 모범 답안
+public class BackspacesInString {
+  public String cleanString(String s) {
+    while (s.matches(".*[^#]#.*")) s = s.replaceAll("[^#]#", "");
+    return s.replaceAll("#","");
+  }
+}
