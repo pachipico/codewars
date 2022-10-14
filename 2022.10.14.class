@@ -1,0 +1,125 @@
+// Some new cashiers started to work at your restaurant.
+
+// They are good at taking orders, but they don't know how to capitalize words, or use a space bar!
+
+// All the orders they create look something like this:
+
+// "milkshakepizzachickenfriescokeburgerpizzasandwichmilkshakepizza"
+
+// The kitchen staff are threatening to quit, because of how difficult it is to read the orders.
+
+// Their preference is to get the orders as a nice clean string with spaces and capitals like so:
+
+// "Burger Fries Chicken Pizza Pizza Pizza Sandwich Milkshake Milkshake Coke"
+
+// The kitchen staff expect the items to be in the same order as they appear in the menu.
+
+// The menu items are fairly simple, there is no overlap in the names of the items:
+
+// 1. Burger
+// 2. Fries
+// 3. Chicken
+// 4. Pizza
+// 5. Sandwich
+// 6. Onionrings
+// 7. Milkshake
+// 8. Coke
+
+// 내 답안
+import java.util.*;
+import java.util.stream.Collectors;
+
+
+public class Solution {
+    public static String getOrder(String input) {
+		input = input.replaceAll("burger", "Burger ");
+		input = input.replaceAll("fries", "Fries ");
+		input = input.replaceAll("chicken", "Chicken ");
+		input = input.replaceAll("pizza", "Pizza ");
+		input = input.replaceAll("sandwich", "Sandwich ");
+		input = input.replaceAll("onionrings", "Onionrings ");
+		input = input.replaceAll("milkshake", "Milkshake ");
+		input = input.replaceAll("coke", "Coke ");
+		String[] arr = input.split(" ");
+		return Arrays.stream(arr).map(v -> {
+			switch (v) {
+			case "Burger":
+				return new Menu(v, 1);
+			case "Fries":
+				return new Menu(v, 2);
+			case "Chicken":
+				return new Menu(v, 3);
+			case "Pizza":
+				return new Menu(v, 4);
+			case "Sandwich":
+				return new Menu(v, 5);
+			case "Onionrings":
+				return new Menu(v, 6);
+			case "Milkshake":
+				return new Menu(v, 7);
+			case "Coke":
+				return new Menu(v, 8);
+			default:
+				break;
+			}
+			return null;
+		}).sorted(Menu::compareTo).map(Menu::getName).collect(Collectors.joining(" "));
+    }
+  
+  	static class Menu implements Comparable<Menu> {
+		private String name;
+		private int num;
+
+		private Menu(String name, int num) {
+			this.name = name;
+			this.num = num;
+		}
+
+		public String getName() {
+			return this.name;
+		}
+
+		public int getNum() {
+			return this.num;
+		}
+
+		@Override
+		public int compareTo(Menu o) {
+			if (this.num > o.getNum()) {
+				return 1;
+			} else if (this.num < o.getNum()) {
+				return -1;
+			}
+			return 0;
+		}
+	}
+}
+
+// 모범답안
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Solution {
+    public static String getOrder(String input) {
+      
+      String[] menu = {"Burger","Fries","Chicken","Pizza","Sandwich","Onionrings","Milkshake","Coke"};
+      
+      String order = "";
+      
+      for (int i = 0; i < menu.length; i++) {
+        
+        Pattern pattern = Pattern.compile(menu[i], Pattern.CASE_INSENSITIVE);
+        
+        Matcher matcher = pattern.matcher(input);
+        
+        while (matcher.find()) {
+        
+          order += menu[i] + " ";
+          
+      }
+      
+    }
+      
+        return order.trim();
+    }
+}
