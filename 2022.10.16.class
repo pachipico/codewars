@@ -1,0 +1,44 @@
+// For a given string s find the character c (or C) with longest consecutive repetition and return:
+
+// Object[]{c, l};
+// where l (or L) is the length of the repetition. If there are two or more characters with the same l return the first in order of appearance.
+
+// For empty string return:
+
+// Object[]{"", 0}
+// In JavaScript: If you use Array.sort in your solution, you might experience issues with the random tests as Array.sort is not stable in the Node.js version used by CodeWars. This is not a kata issue.
+
+// Happy coding! :)
+
+// 내 답안
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class Solution {
+    public static Object[] longestRepetition(String s) {
+        String[] arr = s.split("(?<=(.))(?!\\1)");
+        Arrays.sort(arr, (a,b) -> b.length() - a.length());
+        return s.isBlank() ? new Object[] {"", 0} :new Object[] { arr[0].subString(0,1), arr[0].length() };
+    }
+}
+
+
+// 모범 답안
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Solution {
+    private static final Pattern PATTERN = Pattern.compile("(.)(\\1*)");
+    
+    public static Object[] longestRepetition(String s) {
+        Object[] result = new Object[]{"", 0};
+        Matcher matcher = PATTERN.matcher(s);
+        while (matcher.find()) {
+            if (matcher.group().length() > (int) result[1]) {
+                result[0] = matcher.group().substring(0, 1);
+                result[1] = matcher.group().length();
+            }
+        }
+        return result;
+    }
+}
