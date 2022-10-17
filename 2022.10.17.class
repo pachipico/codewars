@@ -1,0 +1,63 @@
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+// You have to extract a portion of the file name as follows:
+
+// Assume it will start with date represented as long number
+// Followed by an underscore
+// You'll have then a filename with an extension
+// it will always have an extra extension at the end
+// Inputs:
+// 1231231223123131_FILE_NAME.EXTENSION.OTHEREXTENSION
+
+// 1_This_is_an_otherExample.mpg.OTHEREXTENSIONadasdassdassds34
+
+// 1231231223123131_myFile.tar.gz2
+// Outputs
+// FILE_NAME.EXTENSION
+
+// This_is_an_otherExample.mpg
+
+// myFile.tar
+// Acceptable characters for random tests:
+
+// abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-0123456789
+
+// The recommended way to solve it is using RegEx and specifically groups.
+
+// 내 답안
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class FileNameExtractor {
+
+    public static String extractFileName(String dirtyFileName) {
+        System.out.println(dirtyFileName);
+        Pattern pattern = Pattern.compile("_[0-9a-zA-Z-_]*\\.\\w*", Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(dirtyFileName);
+        while (matcher.find()) {
+            System.out.println("Full match: " + matcher.group(0));
+            return matcher.group(0).substring(1);
+        }
+        return "";
+    }
+}
+
+// 모범 답안
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class FileNameExtractor {
+    private static final Pattern FILE_NAME_PATTERN = Pattern.compile("^\\d*_(.*?).\\w*$");
+
+    public static String extractFileName(String dirtyFileName) {
+        Matcher matcher = FILE_NAME_PATTERN.matcher(dirtyFileName);
+
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+
+        throw new RuntimeException("Could not find file name");
+    }
+
+}
