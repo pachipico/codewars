@@ -1,0 +1,43 @@
+// Pair of gloves
+// Winter is coming, you must prepare your ski holidays. The objective of this kata is to determine the number of pair of gloves you can constitute from the gloves you have in your drawer.
+
+// Given an array describing the color of each glove, return the number of pairs you can constitute, assuming that only gloves of the same color can form pairs.
+
+// Examples:
+// input = ["red", "green", "red", "blue", "blue"]
+// result = 2 (1 red pair + 1 blue pair)
+
+// input = ["red", "red", "red", "red", "red", "red"]
+// result = 3 (3 red pairs)
+
+// 내 답안
+import java.util.Map;
+import java.util.HashMap;
+
+class Kata {
+  public static int numberOfPairs(String[] gloves) {
+    System.out.println("==================");
+    Map<String, Integer> map = new HashMap<>();
+    for(String s :gloves){
+      map.computeIfPresent(s, (k,v) -> ++v);
+      map.putIfAbsent(s, 1);
+    }
+    return map.entrySet().parallelStream().mapToInt(v ->  (int)v.getValue()/2 ).sum();
+  }
+}
+
+// 모범답안
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.Arrays;
+
+class Kata {
+  public static int numberOfPairs(String[] gloves) {
+    return (int) Arrays.asList(gloves).stream()
+      .collect(Collectors.groupingBy(s -> s, Collectors.counting()))
+      .entrySet().stream()
+      .mapToLong(entry -> entry.getValue() / 2)
+      .sum();
+  }
+}
+// Map을 만드는걸 Arrays 로 할 수 있다는걸 잊고 있었다.
