@@ -1,0 +1,38 @@
+// The objective is to return all pairs of integers from a given array of integers that have a difference of 2.
+
+// The result array should be sorted in ascending order of values.
+
+// Assume there are no duplicate integers in the array. The order of the integers in the input array should not matter.
+
+// Examples
+// [1, 2, 3, 4]  should return [[1, 3], [2, 4]]
+
+// [4, 1, 2, 3]  should also return [[1, 3], [2, 4]]
+
+// [1, 23, 3, 4, 7] should return [[1, 3]]
+
+// [4, 3, 1, 5, 6] should return [[1, 3], [3, 5], [4, 6]]
+
+// 내 답안
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class Kata {
+  public static int[][] twosDifference(int[] array) {
+    List<Integer> ls = Arrays.stream(array).boxed().collect(Collectors.toList());
+    return Arrays.stream(array).filter(v -> ls.contains(v+2) || ls.contains(v-2)).mapToObj(n -> ls.contains(n + 2) ? new int[]{n, n+2} : new int[]{}).filter(arr -> arr.length > 1).sorted((a,b) -> a[0] - b[0]).toArray(int[][]::new);
+  }
+
+  
+  // 모범답안
+  import java.util.*;
+import java.util.stream.*;
+
+public class Kata {
+  public static int[][] twosDifference(int[] a) {
+    var s = Arrays.stream(a).boxed().collect(Collectors.toSet());
+    return Arrays.stream(a).boxed().filter(x -> s.contains(x + 2)).sorted().map(x -> new int[]{x, x + 2}).toArray(int[][]::new);
+  }
+}
+
+// 뭔가 비효율적인 풀이를 한 것 같다
