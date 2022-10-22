@@ -1,0 +1,30 @@
+// In this Kata, you will be given an array of strings and your task is to remove all consecutive duplicate letters from each string in the array.
+
+// For example:
+
+// dup(["abracadabra","allottee","assessee"]) = ["abracadabra","alote","asese"].
+
+// dup(["kelless","keenness"]) = ["keles","kenes"].
+
+// Strings will be lowercase only, no spaces. See test cases for more examples.
+
+// Good luck!
+
+// 내 답안
+import java.util.Arrays;
+
+class Solution{    
+    public static String[] dup(String[] arr){
+      return Arrays.stream(arr).map( v -> Arrays.stream(v.split("")).reduce(new String(""), (acc, a) -> acc.endsWith(a) ? acc : acc.concat(a))).toArray(String[]::new);
+    }
+}
+
+// 모범답안
+import java.util.Arrays;
+class Solution{    
+  public static String[] dup(String[] arr){
+    return Arrays.stream(arr).map(x->x.replaceAll("(.)(?=\\1)","")).toArray(String[]::new);
+  }
+}
+
+// 정규식 공부하자...
