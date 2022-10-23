@@ -30,5 +30,5 @@ class WhereIsMyParent {
         Arrays.sort(sorted); 
         Arrays.sort(sorted, String.CASE_INSENSITIVE_ORDER);
         return String.join("", sorted);
-    }
+    
 }
