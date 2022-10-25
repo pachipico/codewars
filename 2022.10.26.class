@@ -1,0 +1,64 @@
+// Return the century of the input year. The input will always be a 4 digit string, so there is no need for validation.
+
+// Examples
+// "1999" --> "20th"
+// "2011" --> "21st"
+// "2154" --> "22nd"
+// "2259" --> "23rd"
+// "1124" --> "12th"
+// "2000" --> "20th"
+
+// 내 답안
+import java.util.Arrays;
+
+public class Solution {
+
+  public static String whatCentury(int year) {
+    String[] strArr = new String[] {
+      "th",
+      "st",
+      "nd",
+      "rd",
+      "th",
+      "th",
+      "th",
+      "th",
+      "th",
+      "th",
+    };
+    int[] arr = Arrays
+      .stream(String.valueOf(year).split(""))
+      .mapToInt(Integer::valueOf)
+      .toArray();
+    int century = Integer.valueOf("" + arr[0] + arr[1]);
+    century = (arr[2] > 0 ? century + 1 : arr[3] > 0 ? century + 1 : century);
+    return (
+      "" +
+      century +
+      (
+        century >= 10 && century < 20
+          ? "th"
+          : strArr[Integer.valueOf(String.valueOf(century).split("")[1])]
+      )
+    );
+  }
+}
+
+// 모범답안
+public class Solution {
+
+  public static String whatCentury(int year) {
+    int century = (year + 99) / 100;
+    if (century / 10 == 1) return century + "th";
+    switch (century % 10) {
+      case 1:
+        return century + "st";
+      case 2:
+        return century + "nd";
+      case 3:
+        return century + "rd";
+      default:
+        return century + "th";
+    }
+  }
+}
