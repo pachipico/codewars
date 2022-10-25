@@ -1,0 +1,60 @@
+// Pirates have notorious difficulty with enunciating. They tend to blur all the letters together and scream at people.
+
+// At long last, we need a way to unscramble what these pirates are saying.
+
+// Write a function that will accept a jumble of letters as well as a dictionary, and output a list of words that the pirate might have meant.
+
+// For example:
+
+// grabscrab( "ortsp", ["sport", "parrot", "ports", "matey"] )
+// Should return ["sport", "ports"].
+
+// Return matches in the same order as in the dictionary. Return an empty array if there are no matches.
+
+// 내 답안
+import java.util.*;
+
+public class Grab {
+  
+  public static List<String> grabscrab(String s, List<String> words){
+          Map<String, Integer> map = new HashMap<>();
+          List<String> res = new ArrayList<>();
+          for(String str : s.split("")){
+            map.computeIfPresent(str, (k,v) -> ++v);
+            map.putIfAbsent(str, 1);
+          }
+          for(String word : words){
+            Map<String, Integer> map_ = new HashMap<>();
+            Arrays.stream(word.split("")).forEach(ch -> {
+              map_.computeIfPresent(ch, (k, v) -> ++v);
+              map_.putIfAbsent(ch, 1);
+            });
+            if(map.equals(map_)) res.add(word);
+          }
+    return res;
+  }
+}
+
+// 모범답안
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Grab {
+  
+  public static List<String> grabscrab(String s, List<String> words){
+    List<String> strings = new ArrayList<>();
+    String collect = Arrays.stream(s.split("")).sorted().collect(Collectors.joining());
+      
+    for (int i = 0; i < words.size(); i++) {
+      if (collect.equals(Arrays.stream(words.get(i).split("")).sorted()
+                    .collect(Collectors.joining()))) {
+        strings.add(words.get(i));
+      }
+    }
+  return strings;
+  }
+}
+
+// sort한 후 비교하는 풀이는 생각을 못한것 같다. 순서가 없는 map을 사용한것도 잘한듯.. 
