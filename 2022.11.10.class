@@ -1,0 +1,32 @@
+// Numbers ending with zeros are boring.
+
+// They might be fun in your world, but not here.
+
+// Get rid of them. Only the ending ones.
+
+// 1450 -> 145
+// 960000 -> 96
+// 1050 -> 105
+// -1050 -> -105
+// Zero alone is fine, don't worry about it. Poor guy anyway
+
+// 내 답안
+public class NoBoring {
+
+  public static int noBoringZeros(int n) {
+    // your code
+    return n == 0
+      ? 0
+      : Integer.parseInt(String.valueOf(n).replaceAll("0{1,}$", ""));
+  }
+}
+
+// 모범답안
+public class NoBoring {
+
+  public static int noBoringZeros(int n) {
+    return Integer.parseInt(
+      Integer.valueOf(n).toString().replaceAll("(?!^)[0]+$", "")
+    );
+  }
+}
