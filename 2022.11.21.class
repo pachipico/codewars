@@ -1,0 +1,25 @@
+// Write a simple regex to validate a username. Allowed characters are:
+
+// lowercase letters,
+// numbers,
+// underscore
+// Length should be between 4 and 16 characters (both included).
+
+// 내 답안
+public class ZywOo {
+
+  public static boolean validateUsr(String s) {
+    //glhf:)
+    return s.length() >= 4 && s.length() <= 16
+      ? s.matches("^[0-9a-z_]{0,}$")
+      : false;
+  }
+}
+
+// 모범답안
+public class ZywOo {
+
+  public static boolean validateUsr(String s) {
+    return s.matches("[a-z_\\d]{4,16}");
+  }
+}

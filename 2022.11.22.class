@@ -1,0 +1,57 @@
+// Description:
+
+// We want to generate a function that computes the series starting from 0 and ending until the given number.
+
+// Example:
+// Input:
+
+// > 6
+// Output:
+
+// 0+1+2+3+4+5+6 = 21
+
+// Input:
+
+// > -15
+// Output:
+
+// -15<0
+
+// Input:
+
+// > 0
+// Output:
+
+// 0=0
+
+// 내 답안
+import java.util.stream.IntStream;
+
+public class SequenceSum {
+
+  public static String showSequence(int value) {
+    StringBuilder sb = new StringBuilder("0");
+    int res = 0;
+    for (int i = 1; i <= value; i++) {
+      sb.append("+" + String.valueOf(i));
+      res += i;
+    }
+    return value < 0
+      ? String.valueOf(value) + "<0"
+      : sb.append((res == 0 ? "=" : " = ") + res).toString();
+  }
+}
+
+// 모범답안
+public class SequenceSum {
+
+  public static String showSequence(int value) {
+    String ans = "";
+    if (value < 0) return "" + value + "<0";
+    if (value == 0) return "0=0";
+    for (int i = 0; i <= value; i++) ans += "" + i + "+";
+    return (
+      ans.substring(0, ans.length() - 1) + " = " + (value * (value + 1) / 2)
+    );
+  }
+}
