@@ -1,0 +1,28 @@
+// Build a function that returns an array of integers from n to 1 where n>0.
+
+// Example : n=5 --> [5,4,3,2,1]
+
+// 내 답안 
+
+import java.util.stream.IntStream;
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class Sequence{
+
+  public static int[] reverse(int n){
+    //your code
+    return Arrays.stream(IntStream.range(1, n+1).boxed().sorted(Comparator.reverseOrder()).toArray(Integer[]::new)).mapToInt(Integer::intValue).toArray();
+  }
+}
+
+// 모범 답안
+import java.util.stream.IntStream;
+
+public class Sequence{
+
+  public static int[] reverse(int n){
+    
+    return IntStream.range(-n, 0).map(Math::abs).toArray();
+  }
+}
