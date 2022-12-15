@@ -36,3 +36,4 @@ public class Solution {
     return (n * n + "").endsWith("" + n) ? "Automorphic" : "Not!!";
   }
 }
+// endsWith 처음봄
