@@ -1,0 +1,25 @@
+// Your car is old, it breaks easily. The shock absorbers are gone and you think it can handle about 15 more bumps before it dies totally.
+
+// Unfortunately for you, your drive is very bumpy! Given a string showing either flat road (_) or bumps (n). If you are able to reach home safely by encountering 15 bumps or less, return Woohoo!, otherwise return Car Dead
+
+// 내 답안
+import java.util.Arrays;
+
+public class BumpsTheRoad {
+
+  public static String bumps(final String road) {
+    return Arrays.stream(road.replaceAll("_", "").split("")).count() <= 15
+      ? "Woohoo!"
+      : "Car Dead";
+  }
+}
+
+// 모범 답안
+public class BumpsTheRoad {
+
+  public static String bumps(final String road) {
+    return road.chars().filter(ch -> ch == 'n').count() > 15
+      ? "Car Dead"
+      : "Woohoo!";
+  }
+}
