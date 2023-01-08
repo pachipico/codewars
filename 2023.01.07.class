@@ -1,0 +1,47 @@
+//Create a moreZeros function which will receive a string for input, and return an array (or null terminated string in C) containing only the characters from that string whose binary representation of its ASCII value consists of more zeros than ones.
+//
+//        You should remove any duplicate characters, keeping the first occurrence of any such duplicates, so they are in the same order in the final array as they first appeared in the input string.
+//
+//        Examples
+//
+//        'abcde' === ["1100001", "1100010", "1100011", "1100100", "1100101"]
+//        True       True       False      True       False
+//
+//        --> ['a','b','d']
+//
+//        'DIGEST'--> ['D','I','E','T']
+//        All input will be valid strings of length > 0. Leading zeros in binary should not be counted.
+
+// 내 답안
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+public class Kata {
+    public static char[] moreZeros(String s) {
+        // your code goes here
+        
+        String res = Arrays.stream(s.split("")).filter(v -> trueFalse(v)).distinct().collect(Collectors.joining());
+        return res.toCharArray();
+    }
+
+    private static boolean trueFalse (String s) {
+        String bs = Integer.toBinaryString(s.toCharArray()[0]);
+        int zeros = 0;
+        int ones = 0;
+        for (String str : bs.split("")){
+            if(str.equals("0")) zeros+=1;
+            else ones += 1;
+        }
+        return zeros > ones ? true : false;
+    }
+}
+
+// 모범 답안
+import static java.util.stream.Collectors.joining;
+
+interface Kata {
+    static char[] moreZeros(String s) {
+        return s.chars().distinct().filter(i -> 1.44 * Math.log(i) > 2 * Integer.bitCount(i))
+                .mapToObj(c -> "" + (char) c).collect(joining()).toCharArray();
+    }
+}

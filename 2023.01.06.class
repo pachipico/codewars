@@ -1,0 +1,33 @@
+// Write a method that takes one argument as name and then greets that name, capitalized and ends with an exclamation point.
+
+// Example:
+
+// "riley" --> "Hello Riley!"
+// "JACK"  --> "Hello Jack!"
+
+// 내 답안
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+public class GreetMe {
+
+  public static String greet(String name) {
+    String[] arr = name.toLowerCase().split("");
+    arr[0] = arr[0].toUpperCase();
+    return new String()
+      .format("Hello %s!", Arrays.stream(arr).collect(Collectors.joining("")));
+  }
+}
+
+// 모범답안
+public class GreetMe {
+
+  public static String greet(String name) {
+    return (
+      "Hello " +
+      name.substring(0, 1).toUpperCase() +
+      name.substring(1).toLowerCase() +
+      "!"
+    );
+  }
+}

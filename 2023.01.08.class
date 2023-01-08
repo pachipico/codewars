@@ -1,0 +1,72 @@
+// You are a robot.
+
+// As a robot, you are programmed to take walks following a path.
+
+// The path is input to you as a string of the following characters where:
+
+// "^" -> step up
+// "v" -> step down
+// ">" -> step right
+// "<" -> step left
+// For example, a valid path would look like:
+
+// "^^vv>><<^v>"
+// However, you are a robot that cannot understand this string of characters just by looking at it. You need detailed instructions on how to follow the path.
+
+// Your objective is to write a program to translate the input path to a set of detailed and readable instructions that even a robot like you could understand.
+
+// To do this, you must translate the previous example
+
+// "^^vvvv>><<^v>"
+// to a "line feed separated string" equivalent to:
+
+// Take 2 steps up
+// Take 4 steps down
+// Take 2 steps right
+// Take 2 steps left
+// Take 1 step up
+// Take 1 step down
+// Take 1 step right
+// Notice that groups of the same characters translate to one instruction only, telling you to take multiple steps.
+
+// 내 답안
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+public class Solution {
+  public static String walk(String path) {
+    String[] arr = path.split("(?<=(.))(?!\\1)");
+    return Arrays.stream(arr).map(v -> {
+      return 
+        v.contains("^") ? "Take " + v.length() + " step" + (v.length() == 1 ? "" : "s") + " up"
+        : v.contains(">") ? "Take " + v.length() + " step" + (v.length() == 1 ? "" : "s") + " right"
+        : v.contains("<") ? "Take " + v.length() + " step" + (v.length() == 1 ? "" : "s") + " left"
+        : v.contains("v") ? "Take " + v.length() + " step" + (v.length() == 1 ? "" : "s") + " down"
+        :"Paused";
+    }).collect(Collectors.joining("\n"));
+  }
+}
+
+// 모범 답안
+import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+
+public class Solution {
+  
+  private final static Pattern SAME_DIR = Pattern.compile("(.)\\1*");
+  private final static Map<Character,String> DIRS = Map.of( '>',"right", '<',"left", '^',"up", 'v',"down");
+  
+  public static String walk(String path) {
+    if(path.isEmpty()) return "Paused";
+    
+    return SAME_DIR.matcher(path).results()
+                   .map( m -> takeThis(m.group(), m.group().length()) )
+                   .collect(Collectors.joining("\n"));
+  }
+  
+  private static String takeThis(String s, int size) {
+    return String.format("Take %d step%s %s", size, size!=1?"s":"", DIRS.get(s.charAt(0)));
+  }
+}
