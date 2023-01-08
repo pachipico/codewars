@@ -40,4 +40,4 @@ class Kata {
       .sum();
   }
 }
-// Map을 만드는걸 Arrays 로 할 수 있다는걸 잊고 있었다.
+// Map을 만드는걸 Arrays 로 할 수 있다는걸 잊고 있었다.₩
