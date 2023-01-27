@@ -1,1 +1,48 @@
-public class d {}
+// Task
+// You are given a dictionary/hash/object containing some languages and your test results in the given languages. Return the list of languages where your test score is at least 60, in descending order of the scores.
+
+// Note: the scores will always be unique (so no duplicate values)
+
+// Examples
+// {"Java" => 10, "Ruby" => 80, "Python" => 65}   -->  ["Ruby", "Python"]
+// {"Hindi" => 60, "Dutch" => 93, "Greek" => 71}  -->  ["Dutch", "Greek", "Hindi"]
+// {"C++" => 50, "ASM" => 10, "Haskell" => 20}    -->  []
+// My other katas
+// If you enjoyed this kata then please try my other katas! :-)
+
+// Translations are welcome!
+
+// 내 답안
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class d {
+
+  public static List<String> myLanguages(final Map<String, Integer> results) {
+    return results
+      .entrySet()
+      .stream()
+      .sorted((a, b) -> a.getValue() - b.getValue())
+      .filter(v -> v.getValue() >= 60)
+      .map(v -> v.getKey())
+      .collect(Collectors.toList());
+  }
+}
+
+
+// 모범답안
+package com.codewars.anter69;
+import java.util.stream.Collectors;
+import java.util.*;
+
+public class MyLanguages {
+  public static List<String> myLanguages(final Map<String, Integer> results) {
+    return results.entrySet()
+                  .stream()
+                  .filter( me -> me.getValue() >= 60 )
+                  .sorted( (m1,m2) -> Integer.compare(m2.getValue(),m1.getValue()) )
+                  .map( me -> me.getKey() )
+                  .collect(Collectors.toList());
+  }
+}
