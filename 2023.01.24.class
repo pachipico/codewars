@@ -30,7 +30,6 @@ public class d {
   }
 }
 
-
 // 모범답안
 package com.codewars.anter69;
 import java.util.stream.Collectors;
