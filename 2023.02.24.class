@@ -1,0 +1,99 @@
+//Sudoku Background
+//        Sudoku is a game played on a 9x9 grid. The goal of the game is to fill all cells of the grid with digits from 1 to 9, so that each column, each row, and each of the nine 3x3 sub-grids (also known as blocks) contain all of the digits from 1 to 9.
+//        More info at: http://en.wikipedia.org/wiki/Sudoku
+//
+//        Sudoku Solution Validator
+//        Write a function that accepts a Sudoku board, and returns true if it is a valid Sudoku solution, or false otherwise. The cells of the input Sudoku board may also contain 0's, which will represent empty cells. Boards containing one or more zeroes are considered to be invalid solutions.
+//
+//        Examples
+//        Valid board:
+//
+//        5 3 4|6 7 8|9 1 2
+//        6 7 2|1 9 5|3 4 8
+//        1 9 8|3 4 2|5 6 7
+//        -----+-----+-----
+//        8 5 9|7 6 1|4 2 3
+//        4 2 6|8 5 3|7 9 1
+//        7 1 3|9 2 4|8 5 6
+//        -----+-----+-----
+//        9 6 1|5 3 7|2 8 4
+//        2 8 7|4 1 9|6 3 5
+//        3 4 5|2 8 6|1 7 9
+//        Invalid board:
+//
+//        This column has two 3's
+//        v
+//        This cell has a 0 > 0 3 4|6 7 8|9 1 2
+//        6 7 2|1 9 5|3 4 8
+//        1 9 8|3 4 2|5 6 7
+//        -----+-----+-----
+//        8 5 9|7 6 1|4 2 3
+//        4 2 6|8 5 3|7 9 1
+//        7 1 3|9 2 4|8 5 6
+//        -----+-----+-----
+//        This box has   /9 6 1|5 3 7|2 8 4
+//        two 3's >| 2 8 3|4 1 9|6 3 5 < This row has two 3's
+//        \3 4 5|2 8 6|1 7 9
+
+// 내 답안 개 억지임...
+import java.util.Arrays;
+import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+public class SudokuValidator {
+
+    public static boolean validate(int[][] board) {
+        String[] v = new String[] {"","","","","","","","",""};
+        String[] b = new String[] {"", "", ""};
+        int count = 0;
+        for(int x = 0; x< 9 ; x++){
+            for(int y = 0 ; y < 9 ; y++){
+                if(y <= 2) b[0] += board[x][y];
+                if(3 <= y && y < 6) b[1] += board[x][y];
+                if(y >= 6 ) b[2] += board[x][y];
+                v[y] += String.valueOf(board[x][y]);
+                if(board[x][y]==0) count ++;
+            }
+        }
+        count += (int) Arrays.stream(board).filter(arr -> Arrays.stream(arr).distinct().count() != 9).count();
+        count += Arrays.stream(v).filter(st -> Arrays.stream(st.split("")).mapToInt(Integer::valueOf).distinct().count() != 9).count();
+        for(String s : b){
+            if(Arrays.stream(s.substring(0, 9).split("")).distinct().count() != 9) count ++;
+            if(Arrays.stream(s.substring(9, 18).split("")).distinct().count() != 9) count ++;
+            if(Arrays.stream(s.substring(18, 27).split("")).distinct().count() != 9) count ++;
+        }
+        return count > 0 ? false :true;
+    }
+
+}
+
+// 모범답안
+import java.util.function.BiFunction;
+        import java.util.stream.*;
+        import java.util.*;
+
+
+public class SudokuValidator {
+
+    private static Set<Integer> BASE = Set.of(1,2,3,4,5,6,7,8,9);
+
+    public static boolean validate(int[][] board) {
+
+        BiFunction<Integer,Integer,Integer>
+                rows  = (i,j) -> board[i][j],
+                cols  = (i,j) -> board[j][i],
+                boxes = (i,j) -> board[ i/3*3 + j/3 ][ i%3*3 + j%3 ];
+
+        return check(rows) && check(cols) && check(boxes);
+    }
+
+    private static boolean check(BiFunction<Integer,Integer,Integer> extract){
+        return IntStream.range(0,9).boxed()
+                .map( i -> IntStream.range(0,9).boxed()
+                        .map(j -> extract.apply(i,j) )
+                        .collect(Collectors.toSet()) )
+                .allMatch( set -> set.equals(BASE) );
+    }
+}
