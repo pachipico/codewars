@@ -1,0 +1,22 @@
+//Debug   function getSumOfDigits that takes positive integer to calculate sum of its digits. Assume that argument is an integer.
+//
+//        Example
+//        123  => 6
+//        223  => 7
+//        1337 => 14
+
+// 내 답안
+import java.util.Arrays;
+
+public class Solution {
+    public static int sumOfDigits(int n) {
+        return Arrays.stream(String.valueOf(n).split("")).mapToInt(Integer::parseInt).sum();
+    }
+}
+
+// 모범 답안
+interface Solution {
+    static int sumOfDigits(int n) {
+        return (n + "").chars().map(d -> d - 48).sum();
+    }
+}

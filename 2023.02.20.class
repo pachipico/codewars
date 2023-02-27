@@ -1,0 +1,171 @@
+//In this kata we are going to mimic a software versioning system.
+//
+//        You have to implement a VersionManager class.
+//
+//        It should accept an optional parameter that represents the initial version. The input will be in one of the following formats: "{MAJOR}", "{MAJOR}.{MINOR}", or "{MAJOR}.{MINOR}.{PATCH}". More values may be provided after PATCH but they should be ignored. If these 3 parts are not decimal values, an exception with the message "Error occured while parsing version!" should be thrown. If the initial version is not provided or is an empty string, use "0.0.1" by default.
+//
+//        This class should support the following methods, all of which should be chainable (except release):
+//
+//        major() - increase MAJOR by 1, set MINOR and PATCH to 0
+//        minor() - increase MINOR by 1, set PATCH to 0
+//        patch() - increase PATCH by 1
+//        rollback() - return the MAJOR, MINOR, and PATCH to their values before the previous major/minor/patch call, or throw an exception with the message "Cannot rollback!" if there's no version to roll back to. Multiple calls to rollback() should be possible and restore the version history
+//        release() - return a string in the format "{MAJOR}.{MINOR}.{PATCH}"
+//        May the binary force be with you!
+
+// 내 답안
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.regex.Pattern;
+
+public class VersionManager {
+    private int major;
+    private int minor;
+    private int patch;
+    private final List<String> version = new LinkedList<>();
+
+    public VersionManager() {
+        init();
+        push();
+    }
+
+    public VersionManager(String st) {
+        if (st.trim().isBlank()) init();
+        else {
+            int[] intArr = parse(st);
+            switch (intArr.length){
+                case 3:
+                    this.major = intArr[0];
+                    this.minor = intArr[1];
+                    this.patch = intArr[2];
+                    break;
+                case 2:
+                    this.major = intArr[0];
+                    this.minor = intArr[1];
+                    this.patch = 0;
+                    break;
+                case 1:
+                    this.major = intArr[0];
+                    this.minor = 0;
+                    this.patch = 0;
+                    break;
+                default:
+                    break;
+            }
+        }
+        push();
+    }
+
+    private void init() {
+        this.major = 0;
+        this.minor = 0;
+        this.patch = 1;
+    }
+
+    public VersionManager major(){
+        this.major += 1;
+        this.minor = 0;
+        this.patch = 0;
+        push();
+        return this;
+    }
+
+    public VersionManager minor() {
+        this.minor += 1;
+        this.patch = 0;
+        push();
+        return this;
+    }
+
+    public VersionManager patch(){
+        this.patch += 1;
+        push();
+        System.out.println("patch");
+        return this;
+    }
+
+    public VersionManager rollback() {
+        if(version.size() < 2) throw new RuntimeException("Cannot rollback!");
+        version.remove(0);
+        int[] intArr = parse(version.get(0));
+        this.major = intArr[0];
+        this.minor = intArr[1];
+        this.patch = intArr[2];
+        return this;
+    }
+
+    public String release() {
+        System.out.println("release: " + major + "." + minor + "." + patch);
+        if(major == 0 && minor == 0 && patch == 0){
+            return "0.0.1";
+        }
+        return tostring();
+    }
+
+    private int[] parse(String st) {
+        String[] strArr = st.split("\\.");
+        if(strArr.length > 3) {
+            strArr = Arrays.stream(Arrays.copyOfRange(strArr, 0, 3)).map(v -> v == null ? "0" : v).toArray(String[]::new);
+        };
+        if(Arrays.stream(strArr).anyMatch(v -> v.matches(Pattern.compile("[a-zA-Z]").pattern()))) throw new RuntimeException("Error occured while parsing version!");
+        return Arrays.stream(strArr).mapToInt(Integer::parseInt).toArray();
+    }
+
+    private String tostring() {
+        return List.of(major, minor, patch).stream().map(String::valueOf).collect(Collectors.joining("."));
+    }
+
+    private void push() {
+        version.add(0, tostring());
+    }
+
+}
+
+
+// 모범답안
+import java.util.Arrays;
+        import java.util.Stack;
+        import java.util.stream.Collectors;
+
+public class VersionManager {
+
+    private Stack<int[]> memory = new Stack<>();
+    private int[] current = {0,0,1};
+
+    public VersionManager() {}
+
+    public VersionManager(String s) {
+        if (!s.isEmpty()) {
+            String[] arr = s.split("\\.");
+            try {
+                for (int i=0 ; i<3 ; i++) {
+                    current[i] = i < arr.length ? Integer.parseInt(arr[i]) : 0;
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Error occured while parsing version!");
+            }
+        }
+    }
+
+    public VersionManager major() { update(0); return this; }
+    public VersionManager minor() { update(1); return this; }
+    public VersionManager patch() { update(2); return this; }
+
+    private void update(int i) {
+        memory.add(Arrays.copyOf(current, 3));
+        current[i] += 1;
+        for (int x=i+1 ; x<3 ; x++) current[x] = 0;
+    }
+
+    public String release() {
+        return Arrays.stream(current)
+                .mapToObj(Integer::toString)
+                .collect(Collectors.joining("."));
+    }
+
+    public VersionManager rollback() {
+        if (memory.isEmpty()) throw new RuntimeException("Cannot rollback!");
+        current = memory.pop();
+        return this;
+    }
+}
