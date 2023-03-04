@@ -1,0 +1,37 @@
+//Count the number of occurrences of each character and return it as a (list of tuples) in order of appearance. For empty output return (an empty list).
+//
+//        Consult the solution set-up for the exact data structure implementation depending on your language.
+//
+//        Example:
+//
+//        ordered_count("abracadabra") == [('a', 5), ('b', 2), ('r', 2), ('c', 1), ('d', 1)]
+
+// 내 답안
+
+import java.util.List;
+import org.apache.commons.lang3.tuple.Pair;
+import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.stream.Collectors;
+
+public class Solution {
+    public static List<Pair<Character, Integer>> orderedCount(String text) {
+        Map<Character, Integer> map = new LinkedHashMap<>();
+        for(Character c : text.toCharArray()){
+            map.computeIfPresent(c, (k,v) -> v += 1);
+            map.putIfAbsent(c, 1);
+        }
+        return map.entrySet().stream().map(v -> Pair.of(v.getKey(), v.getValue())).collect(Collectors.toList());
+    }
+}
+
+// 모범 답안
+import java.util.List;
+        import org.apache.commons.lang3.tuple.Pair;
+        import static org.apache.commons.lang3.StringUtils.countMatches;
+
+interface Solution {
+    static List<Pair<Character, Integer>> orderedCount(String text) {
+        return text.chars().distinct().mapToObj(c -> Pair.of((char) c, countMatches(text, (char) c))).toList();
+    }
+}
