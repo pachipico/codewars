@@ -1,0 +1,37 @@
+//Write a function that takes in a binary string and returns the equivalent decoded text (the text is ASCII encoded).
+//
+//        Each 8 bits on the binary string represent 1 character on the ASCII table.
+//
+//        The input string will always be a valid binary string.
+//
+//        Characters can be in the range from "00000000" to "11111111" (inclusive)
+//
+//        Note: In the case of an empty binary string your function should return an empty string.
+//
+
+
+// 내 답안
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+class Solution {
+
+    public static String binaryToText(String binary) {
+
+        return binary.isBlank() ? binary : Arrays.stream(binary.split("(?<=\\G.{8})")).map(v -> String.valueOf((char) Integer.parseInt(v, 2))).collect(Collectors.joining());
+    }
+
+}
+
+// 모범 답안
+class Solution {
+
+    public static String binaryToText(String binary) {
+        StringBuilder value = new StringBuilder();
+        for (int i=0; i<binary.length(); i=i+8){
+            value.append((char) Integer.parseInt(binary.substring(i, i + 8),2));
+        }
+        return value.toString();
+    }
+
+}
