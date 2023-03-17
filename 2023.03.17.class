@@ -1,0 +1,40 @@
+// Given a string made of digits [0-9], return a string where each digit is repeated a number of times equals to its value.
+
+// Examples
+// explode("312")
+// should return :
+
+// "333122"
+// explode("102269")
+// should return :
+
+// "12222666666999999999"
+
+public class Solution {
+  public static String explode(String digits) {
+    digits = digits.replaceAll("([0])", "");
+    digits = digits.replaceAll("([2])", "$1".repeat(2));
+    digits = digits.replaceAll("([3])", "$1".repeat(3));
+    digits = digits.replaceAll("([4])", "$1".repeat(4));
+    digits = digits.replaceAll("([5])", "$1".repeat(5));
+    digits = digits.replaceAll("([6])", "$1".repeat(6));
+    digits = digits.replaceAll("([7])", "$1".repeat(7));
+    digits = digits.replaceAll("([8])", "$1".repeat(8));
+    digits = digits.replaceAll("([9])", "$1".repeat(9));
+    return digits;
+  }
+}
+
+// 모범답안
+import java.util.stream.Collectors;
+
+public class Solution {
+  public static String explode(String digits) {
+      return digits.chars()
+            .mapToObj(Character::toString)
+            .map(e -> e.repeat(Integer.parseInt(e)))
+            .collect(Collectors.joining());
+  }
+}
+
+//ㅋㅋ
