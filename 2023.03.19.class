@@ -1,0 +1,76 @@
+//Substitute two equal letters by the next letter of the alphabet (two letters convert to one):
+//
+//        "aa" => "b", "bb" => "c", .. "zz" => "a".
+//        The equal letters do not have to be adjacent.
+//        Repeat this operation until there are no possible substitutions left.
+//        Return a string.
+//
+//        Example:
+//
+//        let str = "zzzab"
+//        str = "azab"
+//        str = "bzb"
+//        str = "cz"
+//        return "cz"
+//        Notes
+//        The order of letters in the result is not important.
+//        The letters "zz" transform into "a".
+//        There will only be lowercase letters.
+
+// 내 답안
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Kata {
+
+    public static String lastSurvivors(String str) {
+        String res = sorting(str);
+        while(res.matches(Pattern.compile(".*(\\w)(\\1).*").pattern())){
+            res = reducing(res);
+        }
+        return res;
+    }
+
+    private static String reducing(String st){
+        String res = sorting(st);
+        Matcher matcher = Pattern.compile("(\\w)(\\1)").matcher(res);
+        while(matcher.find()){
+            String seq = matcher.group().substring(1);
+            String replacement = seq.equals("z") ? "a" : String.valueOf((char)(seq.charAt(0) + 1));
+            res = res.replaceAll(seq.repeat(2), replacement);
+        }
+        return sorting(res);
+    }
+
+    private static String sorting(String st){
+        return Arrays.stream(st.split("")).sorted().collect(Collectors.joining());
+    }
+}
+
+// 모범 답안
+public class Kata {
+
+    public static String lastSurvivors(String str) {
+        StringBuilder sb = new StringBuilder(str);
+        boolean mod;
+
+        do {
+            mod = false;
+            for (int i = 0; i < sb.length(); i++) {
+                char ch = sb.charAt(i);
+                int idx = sb.indexOf("" + ch, i + 1);
+                if (idx > 0) {
+                    sb.deleteCharAt(idx);
+                    sb.setCharAt(i, ch == 'z' ? 'a' : (char)(ch + 1));
+                    mod = true;
+                }
+            }
+        } while (mod);
+
+        return sb.toString();
+    }
+
+}
+// 분리해서 해결하는 내 답안이 더 나은것 같다.
