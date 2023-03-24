@@ -1,0 +1,76 @@
+// You are given a small extract of a catalog:
+
+// s = "<prod><name>drill</name><prx>99</prx><qty>5</qty></prod>
+
+// <prod><name>hammer</name><prx>10</prx><qty>50</qty></prod>
+
+// <prod><name>screwdriver</name><prx>5</prx><qty>51</qty></prod>
+
+// <prod><name>table saw</name><prx>1099.99</prx><qty>5</qty></prod>
+
+// <prod><name>saw</name><prx>9</prx><qty>10</qty></prod>
+
+// ...
+// (prx stands for price, qty for quantity) and an article i.e "saw".
+
+// The function catalog(s, "saw") returns the line(s) corresponding to the article with $ before the prices:
+
+// "table saw > prx: $1099.99 qty: 5\nsaw > prx: $9 qty: 10\n..."
+// If the article is not in the catalog return "Nothing".
+
+// 내 답안
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+public class Catalog {
+
+  public static String catalog(String s, String article) {
+    Matcher matcher = Pattern
+      .compile("<prod>.*" + article + ".*</prod>")
+      .matcher(s);
+
+    List<String> res = new LinkedList<>();
+    while (matcher.find()) {
+      res.add(getStuff(matcher.group()));
+    }
+
+    return res.size() == 0
+      ? "Nothing"
+      : res.stream().collect(Collectors.joining("\n"));
+  }
+
+  private static String getStuff(String st) {
+    Map<String, String> map = new HashMap<>();
+    Matcher matcher = Pattern
+      .compile("<(.*)>((\\w|\\s|\\d|\\.)+)</(\\1)>")
+      .matcher(st.replaceAll("<[/]?prod>", ""));
+    while (matcher.find()) {
+      map.put(matcher.group(1), matcher.group(2));
+    }
+    return String.format(
+      "%s > prx: $%s qty: %s",
+      map.get("name"),
+      map.get("prx"),
+      map.get("qty")
+    );
+  }
+}
+
+// 모범 답안
+public class Catalog {
+
+  public static String catalog(String s, String article) {
+    String ret = "";
+    for (String row : s.split("\n")) {
+      String line = row
+        .replace("<prod><name>", "")
+        .replace("</name><prx>", " > prx: $")
+        .replace("</prx><qty>", " qty: ")
+        .replace("</qty></prod>", "");
+      if (line.contains(article)) ret += line + "\n";
+    }
+    return ret.length() == 0 ? "Nothing" : ret.trim();
+  }
+}
