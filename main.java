@@ -1,6 +1,8 @@
 public class main {
 
     public static void main(String[] args) {
-        new VersionManager().major();
+        for(String s : "a".split("")){
+            System.out.println(s);
+        }
     }
 }

@@ -1,25 +1,20 @@
+import java.rmi.Remote;
+import java.util.*;
+import java.util.function.IntBinaryOperator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
+
 public class solution {
-    static int shiftedDiff(String first, String second) {
-        int cnt = 0;
-        if (first.equals(second)) return 0;
-        if (second.equalsIgnoreCase(first) || new StringBuilder(first).reverse().toString().equals(second) || first.trim().length() == 0 || second.trim().length() == 0)
-            return -1;
-        while (!first.equals(second)) {
-            cnt++;
-            String s = rotate(first);
 
-            first = s;
+//  "<prod><name>bicycle wheel</name><prx>150</prx><qty>11</qty></prod>\n\n"
+  public static String catalog(String s, String name) {
+    System.out.println(Arrays.stream(s.split("")).filter(v -> name.indexOf(v)>=0).distinct().collect(Collectors.joining()))
+    return "";
+  }
 
 
-            if (cnt > first.length() + 1) return -1;
-        }
-        return cnt;
-    }
 
-    private static String rotate(String st) {
-        int length = st.length();
-        StringBuilder sb = new StringBuilder(st.substring(length - 1));
-        return sb.append(st, 0, length - 1).toString();
-    }
 }
-
