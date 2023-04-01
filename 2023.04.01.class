@@ -1,0 +1,53 @@
+// What is your favourite day of the week? Check if it's the most frequent day of the week in the year.
+
+// You are given a year as integer (e. g. 2001). You should return the most frequent day(s) of the week in that year. The result has to be a list of days sorted by the order of days in week (e. g. ['Monday', 'Tuesday'], ['Saturday', 'Sunday'], ['Monday', 'Sunday']). Week starts with Monday.
+
+// Input: Year as an int.
+
+// Output: The list of most frequent days sorted by the order of days in week (from Monday to Sunday).
+
+// Preconditions:
+
+// Week starts on Monday.
+// Year is between 1583 and 4000.
+// Calendar is Gregorian.
+// Examples (input -> output):
+// * 2427 -> ['Friday']
+// * 2185 -> ['Saturday']
+// * 2860 -> ['Thursday', 'Friday']
+
+// 내 답안
+import java.util.List;
+import java.util.Calendar;
+import java.util.Collections;
+public class Kata {
+  public static String[] mostFrequentDays(int year) {
+        List<String> day = List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, 0, 1);
+        int first = cal.getTime().getDay();
+        cal.set(year + 1, 0, 1);
+        cal.add(Calendar.DATE, -1);
+        int last = cal.getTime().getDay();
+        List<Integer> res = List.of(first, last);
+        System.out.println(year + " : " + first + " " + last);
+        return res.stream().distinct().sorted().map(idx -> day.get(idx == 0 ? 6 : idx - 1)).sorted((a, b) -> day.indexOf(a) - day.indexOf(b)).toArray(String[]::new);
+        
+  }
+}
+
+// 모범 답안
+  import static java.time.LocalDate.of;
+  import static java.time.format.TextStyle.FULL;
+  import static java.util.Locale.getDefault;
+
+  import java.time.Year;
+
+  interface Kata {
+    static String[] mostFrequentDays(int year) {
+      var jan1 = of(year, 1, 1).getDayOfWeek().getDisplayName(FULL, getDefault());
+      var jan2 = of(year, 1, 2).getDayOfWeek().getDisplayName(FULL, getDefault());
+      return Year.of(year).isLeap() ? jan1.startsWith("Su") ? new String[] {jan2, jan1} : new String[] {jan1, jan2} : new String[] {jan1};
+    }
+  }
