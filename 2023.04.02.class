@@ -29,3 +29,5 @@ public class Kata {
                    .reduce(1, (a,b) -> a * b);
     }
 }
+
+// 쉬웠다
