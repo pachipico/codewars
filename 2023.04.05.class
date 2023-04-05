@@ -49,3 +49,19 @@ class StringHandling {
 }
 
 // results()를 처음 봤다... 좋은데?
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+
+class StringHandling {
+  public static String longestAlpabeticalSubstring(String text) {
+      // Your code here
+        String alphabet = "abcdefghijklmnopqrstuvwxyz";
+        String pt = Arrays.stream(alphabet.split("")).map(v -> String.format("(%s?)+", v)).collect(Collectors.joining());
+        Matcher matcher = Pattern.compile(pt).matcher(text);
+        return matcher.results().sorted((a,b) -> b.group().length() - a.group().length()).findFirst().get().group();
+  }
+}
