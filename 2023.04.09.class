@@ -1,0 +1,33 @@
+//Each floating-point number should be formatted that only the first two decimal places are returned. You don't need to check whether the input is a valid number because only valid numbers are used in the tests.
+//
+//        Don't round the numbers! Just cut them after two decimal places!
+//
+//        Right examples:
+//        32.8493 is 32.84
+//        14.3286 is 14.32
+//
+//        Incorrect examples (e.g. if you round the numbers):
+//        32.8493 is 32.85
+//        14.3286 is 14.33
+
+// 내 답안
+import java.text.DecimalFormat;
+
+public class Numbers
+{
+    public static double twoDecimalPlaces(double number)
+    {
+        //Write your code here
+        return Double.parseDouble(String.valueOf(number).replaceAll("(?<=\\d*\\.\\d{2}).*", ""));
+    }
+}
+
+// 모범 답안
+public class Numbers
+{
+    public static double twoDecimalPlaces(double number)
+    {
+        //Write your code here
+        return (int)(number*100)/100.0;
+    }
+}
