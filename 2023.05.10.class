@@ -1,0 +1,8 @@
+public class 2023.05.10 {
+public static String vowel2Index(String s) {
+        //code me
+        String[] arr = s.split("");
+        List<String> ls = List.of("a", "e", "i", "o", "u");
+        return IntStream.rangeClosed(0, s.length()-1).mapToObj(idx -> ls.contains(arr[idx].toLowerCase()) ? idx+1 : arr[idx]).map(String::valueOf).collect(Collectors.joining());
+        }
+}
