@@ -1,0 +1,18 @@
+public class 2023.05.12 {
+    public static HashMap<String, Integer> looseChange(int cent) {
+        HashMap<String, Integer> map = new HashMap<>();
+        int q = cent / 25;
+        cent -= q * 25;
+        int d = cent / 10;
+        cent -= d * 10;
+        int n = cent / 5;
+        cent -= n * 5;
+
+        map.put("Pennies", cent < 0 ? 0 : cent);
+        map.put("Nickels", n);
+        map.put("Dimes", d);
+        map.put("Quarters", q);
+        //your code here
+        return map;
+    }
+}
